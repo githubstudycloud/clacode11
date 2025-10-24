@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+    这是一个完整示例，展示如何配置本地jar依赖
+    将此文件重命名为 pom.xml 并放入你的jar文件后使用
+-->
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
+         http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>com.example</groupId>
+        <artifactId>maven-multi-module-demo</artifactId>
+        <version>1.0.0-SNAPSHOT</version>
+    </parent>
+
+    <artifactId>common</artifactId>
+    <packaging>jar</packaging>
+
+    <name>Common Module</name>
+    <description>公共模块 - 包含本地lib依赖</description>
+
+    <dependencies>
+        <!-- Spring Boot Starter -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter</artifactId>
+        </dependency>
+
+        <!--
+            示例1：使用旧版本的commons-lang3（假设是不符合要求的版本）
+            将 commons-lang3-3.8.1.jar 放到 lib/ 目录后启用这个依赖
+        -->
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-lang3</artifactId>
+            <version>3.8.1</version>
+            <!-- 这个依赖会在构建时自动从lib目录安装到本地仓库 -->
+        </dependency>
+
+        <!--
+            示例2：其他可能的旧依赖
+            <dependency>
+                <groupId>com.google.guava</groupId>
+                <artifactId>guava</artifactId>
+                <version>20.0</version>
+            </dependency>
+        -->
+    </dependencies>
+
+    <build>
+        <plugins>
+            <!--
+                关键配置：在构建前自动安装lib目录中的jar到本地仓库
+                这样Jenkins构建时会自动处理，无需手动操作
+            -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-install-plugin</artifactId>
+                <version>2.5.2</version>
+                <executions>
+                    <!-- 安装 commons-lang3 -->
+                    <execution>
+                        <id>install-commons-lang3</id>
+                        <phase>validate</phase>
+                        <goals>
+                            <goal>install-file</goal>
+                        </goals>
+                        <configuration>
+                            <!-- 使用相对路径，确保在任何环境都能找到 -->
+                            <file>${project.basedir}/lib/commons-lang3-3.8.1.jar</file>
+                            <groupId>org.apache.commons</groupId>
+                            <artifactId>commons-lang3</artifactId>
+                            <version>3.8.1</version>
+                            <packaging>jar</packaging>
+                            <!-- 生成基本的POM文件 -->
+                            <generatePom>true</generatePom>
+                        </configuration>
+                    </execution>
+
+                    <!--
+                        如果有更多jar需要安装，添加更多execution
+                        示例：
+                    <execution>
+                        <id>install-guava</id>
+                        <phase>validate</phase>
+                        <goals>
+                            <goal>install-file</goal>
+                        </goals>
+                        <configuration>
+                            <file>${project.basedir}/lib/guava-20.0.jar</file>
+                            <groupId>com.google.guava</groupId>
+                            <artifactId>guava</artifactId>
+                            <version>20.0</version>
+                            <packaging>jar</packaging>
+                            <generatePom>true</generatePom>
+                        </configuration>
+                    </execution>
+                    -->
+                </executions>
+            </plugin>
+
+            <!-- Jar打包插件 -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <version>3.2.0</version>
+            </plugin>
+        </plugins>
+    </build>
+</project>

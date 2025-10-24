@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
+         http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>com.example</groupId>
+        <artifactId>maven-multi-module-demo</artifactId>
+        <version>1.0.0-SNAPSHOT</version>
+    </parent>
+
+    <artifactId>module-group</artifactId>
+    <packaging>pom</packaging>
+
+    <name>Module Group</name>
+    <description>模块组 - 包含多个嵌套子模块</description>
+
+    <modules>
+        <module>service-b</module>
+        <!-- 可以继续添加更多子模块 -->
+    </modules>
+</project>
