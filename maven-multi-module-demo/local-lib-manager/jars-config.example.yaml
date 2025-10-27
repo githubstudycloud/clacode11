@@ -1,0 +1,151 @@
+# Maven本地Jar依赖配置示例文件
+# 这是一个完整的配置示例，展示所有可用的配置选项
+
+# ==================== 项目基础信息 ====================
+project:
+  name: "maven-multi-module-demo"
+  version: "1.0.0-SNAPSHOT"
+  base_group: "com.example"
+
+# ==================== 公共模块配置 ====================
+# 公共模块的本地jar依赖会被所有子项目继承
+common:
+  module_name: "common"
+  lib_dir: "../common/lib"  # 相对于本工具目录的路径
+
+  dependencies:
+    # 示例1: Apache Commons Lang3 旧版本
+    - jar_file: "commons-lang3-3.8.1.jar"
+      group_id: "org.apache.commons"
+      artifact_id: "commons-lang3"
+      version: "3.8.1"
+      description: "Apache Commons Lang3 旧版本，用于兼容旧代码"
+
+    # 示例2: 自定义工具库
+    - jar_file: "custom-utils-1.0.0.jar"
+      group_id: "com.example"
+      artifact_id: "custom-utils"
+      version: "1.0.0"
+      description: "公司内部自定义工具库"
+
+    # 示例3: 第三方私有库
+    - jar_file: "vendor-sdk-2.5.0.jar"
+      group_id: "com.vendor"
+      artifact_id: "vendor-sdk"
+      version: "2.5.0"
+      description: "第三方供应商SDK"
+
+# ==================== 子项目配置 ====================
+# 每个子项目可以有自己的私有依赖
+modules:
+  # ---------- Service A 配置 ----------
+  - module_name: "service-a"
+    lib_dir: "../service-a/lib"
+    dependencies:
+      # Service A 专用的数据库驱动
+      - jar_file: "oracle-jdbc-11.2.0.4.jar"
+        group_id: "com.oracle.database.jdbc"
+        artifact_id: "ojdbc6"
+        version: "11.2.0.4"
+        description: "Oracle JDBC驱动（旧版本，用于连接老系统）"
+
+      # Service A 专用的加密库
+      - jar_file: "crypto-lib-1.5.jar"
+        group_id: "com.example"
+        artifact_id: "crypto-lib"
+        version: "1.5"
+        description: "加密工具库，Service A专用"
+
+  # ---------- Service B 配置（嵌套模块） ----------
+  - module_name: "module-group/service-b"
+    lib_dir: "../module-group/service-b/lib"
+    dependencies:
+      # Service B 专用的报表库
+      - jar_file: "jasperreports-5.6.0.jar"
+        group_id: "net.sf.jasperreports"
+        artifact_id: "jasperreports"
+        version: "5.6.0"
+        description: "JasperReports报表库（旧版本）"
+
+      # Service B 专用的Excel处理库
+      - jar_file: "poi-3.17.jar"
+        group_id: "org.apache.poi"
+        artifact_id: "poi"
+        version: "3.17"
+        description: "Apache POI Excel处理库"
+
+  # ---------- 示例：更多子项目 ----------
+  # - module_name: "service-c"
+  #   lib_dir: "../service-c/lib"
+  #   dependencies:
+  #     - jar_file: "service-c-lib.jar"
+  #       group_id: "com.example"
+  #       artifact_id: "service-c-lib"
+  #       version: "1.0.0"
+  #       description: "Service C专用库"
+
+# ==================== Jar源目录配置 ====================
+jar_sources:
+  # jar文件的主要来源目录
+  base_dir: "./jars"
+
+  # 可选：配置额外的源目录
+  # 如果你的jar文件分散在多个位置，可以配置多个源目录
+  # additional_dirs:
+  #   - "/path/to/shared/libs"
+  #   - "C:/company-libs"
+  #   - "../external-libs"
+
+# ==================== 使用说明 ====================
+#
+# 1. 准备jar文件：
+#    将所有jar文件复制到 ./jars 目录
+#
+# 2. 配置依赖信息：
+#    - 对于公共依赖，添加到 common.dependencies
+#    - 对于子项目私有依赖，添加到 modules[x].dependencies
+#
+# 3. 运行管理工具：
+#    python lib_manager.py --all
+#
+# 4. 应用生成的配置：
+#    将 generated-pom-configs.xml 中的配置复制到对应模块的 pom.xml
+#
+# 5. 验证构建：
+#    mvn clean install
+#
+# ==================== 配置字段说明 ====================
+#
+# jar_file:     jar文件名（必须存在于jar_sources.base_dir中）
+# group_id:     Maven GroupId（任意指定，建议使用包名规范）
+# artifact_id:  Maven ArtifactId（任意指定，建议与jar文件名相关）
+# version:      版本号（任意指定，建议与jar实际版本一致）
+# description:  说明信息（可选，用于文档生成）
+#
+# ==================== 注意事项 ====================
+#
+# 1. 所有路径使用相对路径，确保跨平台兼容
+# 2. jar_file 必须真实存在于 jar_sources.base_dir 中
+# 3. group_id、artifact_id、version 需要保持唯一性
+# 4. 配置文件使用UTF-8编码保存
+# 5. YAML语法要求严格的缩进（使用空格，不要用Tab）
+#
+# ==================== 最佳实践 ====================
+#
+# 1. 公共依赖优先：
+#    - 如果多个子项目都需要某个jar，应该配置在common中
+#    - 只有子项目特有的依赖才配置在modules中
+#
+# 2. 命名规范：
+#    - group_id 使用反向域名格式（如 com.example）
+#    - artifact_id 使用小写字母和连字符（如 custom-lib）
+#    - version 使用语义化版本号（如 1.2.3）
+#
+# 3. 文档完善：
+#    - 为每个jar添加清晰的 description
+#    - 在lib目录的README中说明jar的用途和来源
+#
+# 4. 版本管理：
+#    - 定期审查本地jar是否可以用Maven中央仓库版本替换
+#    - 记录每个jar的获取来源和使用原因
+#    - 设置替换计划和时间表

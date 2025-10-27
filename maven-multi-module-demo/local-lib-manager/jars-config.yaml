@@ -1,0 +1,60 @@
+# 本地JAR依赖配置文件
+# 支持公共模块和子项目的本地jar依赖管理
+
+# 项目基础信息
+project:
+  name: "maven-multi-module-demo"
+  version: "1.0.0-SNAPSHOT"
+  base_group: "com.example"
+
+# 公共模块的本地jar依赖
+# 测试场景1: 公共模块添加2个jar (所有子项目都能使用)
+common:
+  module_name: "common"
+  lib_dir: "../common/lib"
+  dependencies:
+    # Apache Commons Lang3 - 旧版本测试
+    - jar_file: "commons-lang3-3.8.1.jar"
+      group_id: "org.apache.commons"
+      artifact_id: "commons-lang3"
+      version: "3.8.1"
+      description: "Apache Commons Lang3 旧版本，用于兼容旧代码"
+
+    # Google Guava - 旧版本测试
+    - jar_file: "guava-28.0-jre.jar"
+      group_id: "com.google.guava"
+      artifact_id: "guava"
+      version: "28.0-jre"
+      description: "Google Guava工具库"
+
+# 子项目的私有本地jar依赖
+modules:
+  # 测试场景2: service-a添加1个私有jar
+  - module_name: "service-a"
+    lib_dir: "../service-a/lib"
+    dependencies:
+      - jar_file: "fastjson-1.2.75.jar"
+        group_id: "com.alibaba"
+        artifact_id: "fastjson"
+        version: "1.2.75"
+        description: "Alibaba FastJson - Service A专用"
+
+  # 测试场景3: 嵌套模块service-b添加1个私有jar
+  - module_name: "module-group/service-b"
+    lib_dir: "../module-group/service-b/lib"
+    dependencies:
+      - jar_file: "gson-2.8.5.jar"
+        group_id: "com.google.code.gson"
+        artifact_id: "gson"
+        version: "2.8.5"
+        description: "Google Gson - Service B专用"
+
+# jar文件源目录配置
+jar_sources:
+  # jar文件的来源目录，脚本会从这里复制jar到各个模块的lib目录
+  base_dir: "./jars"  # 相对于本工具目录
+
+  # 可以配置多个源目录
+  # additional_dirs:
+  #   - "/path/to/other/jars"
+  #   - "C:/local-repo/jars"

@@ -1,0 +1,6 @@
+# 这个目录用于存放需要导入到Maven项目的jar文件
+#
+# 使用方法：
+# 1. 将jar文件复制到此目录
+# 2. 在 jars-config.yaml 中配置jar信息
+# 3. 运行 lib_manager.py 自动处理

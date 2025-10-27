@@ -1,11 +1,10 @@
-# 公共模块 - 本地Jar依赖说明
+# service-a - 本地Jar依赖说明
 
 ## 依赖清单
 
 | Jar文件 | GroupId | ArtifactId | Version | 说明 |
 |---------|---------|------------|---------|------|
-| commons-lang3-3.8.1.jar | org.apache.commons | commons-lang3 | 3.8.1 | Apache Commons Lang3 旧版本，用于兼容旧代码 |
-| guava-28.0-jre.jar | com.google.guava | guava | 28.0-jre | Google Guava工具库 |
+| fastjson-1.2.75.jar | com.alibaba | fastjson | 1.2.75 | Alibaba FastJson - Service A专用 |
 
 ## 使用说明
 

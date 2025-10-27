@@ -37,6 +37,14 @@
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
         </dependency>
+
+        <!-- 本地jar依赖 - Service A专用 -->
+        <!-- Alibaba FastJson - Service A专用 -->
+        <dependency>
+            <groupId>com.alibaba</groupId>
+            <artifactId>fastjson</artifactId>
+            <version>1.2.75</version>
+        </dependency>
     </dependencies>
 
     <build>
@@ -44,6 +52,31 @@
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
+            </plugin>
+
+            <!-- 安装本地lib中的jar到本地Maven仓库 -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-install-plugin</artifactId>
+                <version>2.5.2</version>
+                <executions>
+                    <!-- Alibaba FastJson - Service A专用 -->
+                    <execution>
+                        <id>install-fastjson</id>
+                        <phase>validate</phase>
+                        <goals>
+                            <goal>install-file</goal>
+                        </goals>
+                        <configuration>
+                            <file>${project.basedir}/lib/fastjson-1.2.75.jar</file>
+                            <groupId>com.alibaba</groupId>
+                            <artifactId>fastjson</artifactId>
+                            <version>1.2.75</version>
+                            <packaging>jar</packaging>
+                            <generatePom>true</generatePom>
+                        </configuration>
+                    </execution>
+                </executions>
             </plugin>
         </plugins>
     </build>

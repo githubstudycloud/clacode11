@@ -1,0 +1,65 @@
+本地Jar依赖管理工具 - 文件清单
+==================================
+
+文档文件 (6个)
+--------------
+INDEX.md                  7.3KB   文档导航和快速索引
+QUICKSTART.md            1.9KB   5分钟快速上手指南
+README.md                8.7KB   完整使用文档和API说明
+SUMMARY.md               9.0KB   项目总结和统计信息
+jars-config.example.yaml 5.2KB   完整的配置示例文件
+FILES.txt                本文件   文件清单和说明
+
+核心脚本 (1个)
+--------------
+lib_manager.py           15KB    核心Python管理工具
+
+启动脚本 (2个)
+--------------
+run.bat                  2.8KB   Windows一键启动脚本
+run.sh                   2.9KB   Linux/Mac一键启动脚本
+
+配置文件 (2个)
+--------------
+jars-config.yaml         1.8KB   jar依赖配置文件（用户编辑）
+requirements.txt         12B     Python依赖包清单
+
+目录 (1个)
+----------
+jars/                    -       jar文件源目录
+  └── .gitkeep           -       保持目录结构的占位文件
+
+其他文件 (1个)
+--------------
+.gitignore               -       Git忽略规则配置
+
+总计
+----
+文件: 13个
+目录: 1个
+总大小: ~60KB
+文档行数: ~1500行
+代码行数: ~500行
+
+使用入口
+--------
+1. 快速上手: QUICKSTART.md
+2. 完整文档: README.md
+3. 文档导航: INDEX.md
+4. 一键运行: run.bat (Windows) 或 run.sh (Linux/Mac)
+5. Python脚本: python lib_manager.py --help
+
+生成的文件（运行后）
+-------------------
+generated-pom-configs.xml    生成的Maven POM配置
+../common/lib/README.md      公共模块lib说明文档
+../service-a/lib/README.md   Service-A模块lib说明文档（如配置）
+../module-group/service-b/lib/README.md  Service-B模块lib说明文档（如配置）
+
+项目信息
+--------
+版本: v1.0
+日期: 2024-10-27
+许可: MIT License
+Python: 3.6+
+依赖: PyYAML >= 5.1

@@ -24,25 +24,19 @@
             <artifactId>spring-boot-starter</artifactId>
         </dependency>
 
-        <!--
-            关键配置：使用system scope引用本地lib目录中的jar
-            这里以commons-lang3的旧版本为例（假设这是不符合要求的旧版本）
-            实际使用时，将你需要的jar文件放到 lib/ 目录下
-        -->
-        <!--
+        <!-- 本地jar依赖 - 由lib_manager.py自动生成 -->
+        <!-- Apache Commons Lang3 旧版本，用于兼容旧代码 -->
         <dependency>
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-lang3</artifactId>
             <version>3.8.1</version>
-            <scope>system</scope>
-            <systemPath>${project.basedir}/lib/commons-lang3-3.8.1.jar</systemPath>
         </dependency>
-        -->
-
-        <!--
-            方案2：使用Maven插件在构建时将lib目录的jar包含到classpath
-            这个方法更好，因为system scope在某些情况下会有问题
-        -->
+        <!-- Google Guava工具库 -->
+        <dependency>
+            <groupId>com.google.guava</groupId>
+            <artifactId>guava</artifactId>
+            <version>28.0-jre</version>
+        </dependency>
     </dependencies>
 
     <build>
@@ -92,23 +86,38 @@
                 <artifactId>maven-install-plugin</artifactId>
                 <version>2.5.2</version>
                 <executions>
-                    <!-- 示例：安装本地jar到本地仓库 -->
-                    <!--
+                    <!-- Apache Commons Lang3 旧版本，用于兼容旧代码 -->
                     <execution>
-                        <id>install-local-jar</id>
+                        <id>install-commons-lang3</id>
                         <phase>validate</phase>
                         <goals>
                             <goal>install-file</goal>
                         </goals>
                         <configuration>
-                            <file>${project.basedir}/lib/your-jar-name.jar</file>
-                            <groupId>com.example</groupId>
-                            <artifactId>your-artifact-id</artifactId>
-                            <version>1.0.0</version>
+                            <file>${project.basedir}/lib/commons-lang3-3.8.1.jar</file>
+                            <groupId>org.apache.commons</groupId>
+                            <artifactId>commons-lang3</artifactId>
+                            <version>3.8.1</version>
                             <packaging>jar</packaging>
+                            <generatePom>true</generatePom>
                         </configuration>
                     </execution>
-                    -->
+                    <!-- Google Guava工具库 -->
+                    <execution>
+                        <id>install-guava</id>
+                        <phase>validate</phase>
+                        <goals>
+                            <goal>install-file</goal>
+                        </goals>
+                        <configuration>
+                            <file>${project.basedir}/lib/guava-28.0-jre.jar</file>
+                            <groupId>com.google.guava</groupId>
+                            <artifactId>guava</artifactId>
+                            <version>28.0-jre</version>
+                            <packaging>jar</packaging>
+                            <generatePom>true</generatePom>
+                        </configuration>
+                    </execution>
                 </executions>
             </plugin>
         </plugins>
