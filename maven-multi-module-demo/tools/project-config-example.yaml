@@ -1,0 +1,62 @@
+# Maven多模块项目配置示例
+# 使用方法: python project-generator-advanced.py --config project-config-example.yaml
+
+# 项目基本信息
+project_name: my-ecommerce-system
+base_dir: "."
+group_id: com.mycompany.ecommerce
+package_name: com/mycompany/ecommerce
+version: 1.0.0-SNAPSHOT
+
+# Java和Spring Boot版本
+java_version: "1.8"
+spring_boot_version: "2.7.18"
+
+# 模板类型: minimal, standard, full
+template: standard
+
+# 是否包含示例代码
+include_examples: true
+
+# 是否支持本地lib
+include_local_lib: true
+
+# 模块配置
+modules:
+  # 公共模块
+  - name: common
+    type: lib
+    description: 公共工具和实体类
+
+  # 用户服务
+  - name: user-service
+    type: service
+    port: 8081
+    description: 用户管理服务
+
+  # 商品服务
+  - name: product-service
+    type: service
+    port: 8082
+    description: 商品管理服务
+
+  # 模块组（聚合器）
+  - name: business-group
+    type: aggregator
+    children:
+      - order-service
+      - payment-service
+
+  # 订单服务（嵌套在business-group下）
+  - name: order-service
+    type: service
+    path: business-group
+    port: 8083
+    description: 订单管理服务
+
+  # 支付服务（嵌套在business-group下）
+  - name: payment-service
+    type: service
+    path: business-group
+    port: 8084
+    description: 支付服务
